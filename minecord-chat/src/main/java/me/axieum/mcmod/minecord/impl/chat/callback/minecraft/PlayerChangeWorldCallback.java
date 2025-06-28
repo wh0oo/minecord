@@ -41,3 +41,32 @@ public class PlayerChangeWorldCallback implements ServerEntityWorldChangeEvents.
                 // The name of the world the player entered
                 "world", string(StringUtils.getWorldName(dest)),
                 // The X coordinate of where the player entered
+                "pos_x", string(String.valueOf(player.getBlockX())),
+                // The Y coordinate of where the player entered
+                "pos_y", string(String.valueOf(player.getBlockY())),
+                // The Z coordinate of where the player entered
+                "pos_z", string(String.valueOf(player.getBlockZ())),
+                // The name of the world the player left
+                "origin", string(StringUtils.getWorldName(origin)),
+                // The X coordinate of where the player left
+                "origin_pos_x", string(String.valueOf(lastBlockPos.getX())),
+                // The Y coordinate of where the player left
+                "origin_pos_y", string(String.valueOf(lastBlockPos.getY())),
+                // The Z coordinate of where the player left
+                "origin_pos_z", string(String.valueOf(lastBlockPos.getZ()))
+            );
+
+            /*
+             * Dispatch the message.
+             */
+
+            DiscordDispatcher.embedWithAvatar(
+                (embed, entry) -> embed.setDescription(
+                    PlaceholdersExt.parseString(entry.discord.teleportNode, ctx, placeholders)
+                ),
+                entry -> entry.discord.teleport != null && entry.hasWorld(dest),
+                player.getUuidAsString()
+            );
+        });
+    }
+}
