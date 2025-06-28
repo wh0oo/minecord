@@ -2,8 +2,11 @@
 
 name: Build
 
-# On pull requests
 on:
+  push:
+    branches:
+      - main
+      - dev
   pull_request:
     paths:
       - '**/src/**'
@@ -12,6 +15,7 @@ on:
       - '**/settings.gradle'
       - .github/workflows/build.yml
       - LICENCE.txt
+  workflow_dispatch:
 
 jobs:
   build:
@@ -50,9 +54,3 @@ jobs:
         with:
           name: reports
           path: '**/build/reports/'
-
-      - name: 🗃 Upload Maven local
-        uses: actions/upload-artifact@v3
-        with:
-          name: maven
-          path: ~/.m2/repository/
